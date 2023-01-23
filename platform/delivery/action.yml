@@ -15,6 +15,9 @@ inputs:
     description: 'Branch name used to build. It will be used the last commit available in this branch. Defaults to the branch triggering the workflow.'
     default: ${GITHUB_REF#refs/heads/}
     required: true
+  reuse_branch:
+    description: 'Reuse an existing branch -or- delete the existing branch and create a new one'
+    default: false
   platform_branch:
     description: 'Name of the branch created in the platform-deployment repository. Defaults to gha-${current-branch-name}'
     default: gha-${GITHUB_REF##*/}
@@ -61,3 +64,4 @@ runs:
         gh_pat: ${{ inputs.gh_pat }}
         apps: ${{ inputs.apps }}
         chart_name: ${{ inputs.chart_name }}
+        reuse_branch: ${{ inputs.reuse_branch }}
