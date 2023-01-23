@@ -59,7 +59,7 @@ runs:
         docker_build_job_name: ${{ inputs.docker_build_job_name }}
 
     - name: 'Create platform-deployment Branch'
-      uses: labforward/platform-gha/platform/branch/create@1.0.1
+      uses: labforward/platform-gha/platform/branch/create@chore/recreate-branch-for-each-build
       with:
         gh_pat: ${{ inputs.gh_pat }}
         apps: ${{ inputs.apps }}
