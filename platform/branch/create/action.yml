@@ -61,7 +61,7 @@ runs:
         cd platform-deployment 
         git config user.name "GitHub Actions"
         git config user.email "<>"
-        [ '${{ inputs.reuse_branch }}' = 'true' ] && echo "reusing branch" || git push origin --delete ${{ inputs.platform_branch }} && echo "old branch deleted" || echo "no existing old branch to delete"
+        [ '${{ inputs.reuse_branch }}' = 'false' ] && git push origin --delete ${{ inputs.platform_branch }} 
         git checkout -b ${{ inputs.platform_branch }}
         git pull --rebase --set-upstream origin ${{ inputs.platform_branch }} | true
 
