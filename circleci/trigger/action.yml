@@ -61,6 +61,10 @@ runs:
           echo "Pipeline status is $STATUS"
           sleep 10
           STATUS=$(curl -sS "https://circleci.com/api/v2/pipeline/$CCI_RESPONSE/workflow?circle-token=$CCI_TOKEN" | jq -Mre ".items[] | select(.name == \"${CCI_BUILD_NAME}\") | .status" || echo '"circleci_curl_fail"')
+          if [[ $STATUS = 'circleci_curl_fail' ]]; then
+            sleep 5
+            STATUS=$(curl -sS "https://circleci.com/api/v2/pipeline/$CCI_RESPONSE/workflow?circle-token=$CCI_TOKEN" | jq -Mre ".items[] | select(.name == \"${CCI_BUILD_NAME}\") | .status" || echo '"circleci_curl_fail"')
+          fi
         done
         
         if [[ $STATUS = 'success' ]]; then
