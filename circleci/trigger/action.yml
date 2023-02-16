@@ -54,7 +54,7 @@ runs:
       run: |
         echo "Waiting 30 seconds before start checking CircleCI status."
         echo "Check on https://app.circleci.com/pipelines/github/labforward/${{ github.event.repository.name }}"
-        sleep 15
+        sleep 30
         curl_status="(curl -sS \"https://circleci.com/api/v2/pipeline/$CCI_RESPONSE/workflow?circle-token=$CCI_TOKEN\" | jq -Mre \".items[] | select(.name == \\\"${CCI_BUILD_NAME}\\\") | .status\"  || echo 'circleci_curl_fail')" 
         STATUS='running'
         while [[ $STATUS = 'running' ]]; do
