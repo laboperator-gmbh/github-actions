@@ -61,7 +61,9 @@ runs:
         cd platform-deployment 
         git config user.name "GitHub Actions"
         git config user.email "<>"
-        [ '${{ inputs.reuse_branch }}' = 'false' ] && git push origin --delete ${{ inputs.platform_branch }} 
+        if [ '${{ inputs.reuse_branch }}' = 'false' ]; then
+          git push origin --delete ${{ inputs.platform_branch }} || echo "Delete branch failed! branch is probably gone already."
+        fi 
         git checkout -b ${{ inputs.platform_branch }}
         git pull --rebase --set-upstream origin ${{ inputs.platform_branch }} | true
 
