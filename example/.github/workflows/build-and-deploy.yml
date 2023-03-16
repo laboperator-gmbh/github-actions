@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'Command send to the platform-repository'
+        description: "Command send to the platform-repository"
         required: true
-        default: 'deploy'
+        default: "deploy"
         type: choice
         options:
           - deploy
@@ -14,20 +14,20 @@ on:
         description: "Application's Acronyms to deploy. Check https://github.com/labforward/platform-deployment/blob/main/config/installation/activation.properties"
         type: string
         required: true
-        default: '{fos}'
+        default: "{fos}"
       docker_build_job_name:
         description: "Name of the product's job that build and push the application's docker image"
         type: string
         required: true
-        default: 'docker-build-and-push'
+        default: "docker-build-and-push"
 
 jobs:
   create-platform-branch:
-    name: 'Build And Trigger Platform Deployment'
+    name: "Build And Trigger Platform Deployment"
     runs-on: ubuntu-22.04
     steps:
-      - name: 'Build with CircleCI and Deploy via Platform'
-        uses: labforward/platform-gha/platform/delivery@1.0.1
+      - name: "Build with CircleCI and Deploy via Platform"
+        uses: labforward/platform-gha/platform/delivery@1
         with:
           cci_token: ${{ secrets.CCI_TOKEN }}
           gh_pat: ${{ secrets.GH_PAT }}

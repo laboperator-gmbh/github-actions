@@ -1,12 +1,12 @@
-name: 'Commit to Platform'
+name: "Commit to Platform"
 
 on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'Command send to the platform-repository'
+        description: "Command send to the platform-repository"
         required: true
-        default: 'deploy'
+        default: "deploy"
         type: choice
         options:
           - deploy
@@ -14,15 +14,15 @@ on:
         description: "Application's Acronyms to deploy. Check https://github.com/labforward/platform-deployment/blob/main/config/installation/activation.properties"
         type: string
         required: true
-        default: '{fos}'
+        default: "{fos}"
 
 jobs:
   create-platform-branch:
-    name: 'Commit chartVersion to Platform Branch'
+    name: "Commit chartVersion to Platform Branch"
     runs-on: ubuntu-22.04
     steps:
-      - name: 'Create platform-deployment Branch'
-        uses: labforward/platform-gha/platform/branch/create@1.0.1
+      - name: "Create platform-deployment Branch"
+        uses: labforward/platform-gha/platform/branch/create@1
         with:
           gh_pat: ${{ secrets.GH_PAT }}
           apps: ${{ inputs.apps }}

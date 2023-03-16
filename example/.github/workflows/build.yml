@@ -7,15 +7,15 @@ on:
         description: "Name of the product's job that build and push the application's docker image"
         type: string
         required: true
-        default: 'docker-build-and-push'
+        default: "docker-build-and-push"
 
 jobs:
   circleci-docker-build:
-    name: 'Trigger CircleCI Build'
+    name: "Trigger CircleCI Build"
     runs-on: ubuntu-22.04
     steps:
-      - name: 'Trigger CircleCI Build'
-        uses: labforward/platform-gha/circleci/trigger@1.0.1
+      - name: "Trigger CircleCI Build"
+        uses: labforward/platform-gha/circleci/trigger@1
         with:
           cci_token: ${{ secrets.CCI_TOKEN }}
           docker_build_job_name: ${{ inputs.docker_build_job_name }}

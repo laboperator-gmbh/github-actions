@@ -27,7 +27,7 @@ on:
         options:
           - deploy
       apps:
-        description: "Application's Acronyms to deploy. Check the full list of available applications in 
+        description: "Application's Acronyms to deploy. Check the full list of available applications in
         https://github.com/labforward/platform-deployment/blob/main/config/installation/activation.properties"
         type: string
         required: true
@@ -38,12 +38,11 @@ jobs:
     name: 'Build And Trigger Platform Deployment'
     runs-on: ubuntu-22.04
     steps:
-      - name: 'Checkout actions'
-        uses: actions/checkout@v3
       - name: 'Build with CircleCI and Deploy via Platform'
-        uses: labforward/platform-gha/platform/delivery@0.0.8
+        uses: labforward/platform-gha/platform/delivery@1
         with:
           cci_token: ${{ secrets.CCI_TOKEN }}
+          docker_build_job_name: 'docker-build-commit-workflow'
           gh_pat: ${{ secrets.GH_PAT }}
           apps: ${{ inputs.apps }}
           chart_name: "file-object-storage-chart.yaml"
