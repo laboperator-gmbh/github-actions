@@ -1,35 +1,36 @@
 name: "Create Platform Branch"
 
-description: "Creates a new branch named gha-{current-branch}. Then, creates a new commit replacing the chartVersion with the commit hash.
+description:
+  "Creates a new branch named gha-{current-branch}. Then, creates a new commit replacing the chartVersion with the commit hash.
   If the branch already exists, then it will create only the new commit."
 
 inputs:
   gh_pat:
-    description: 'Github PAT used to trigger the pipeline. It must be a PAT instead of project token'
+    description: "Github PAT used to trigger the pipeline. It must be a PAT instead of project token"
     required: true
   branch:
-    description: 'Branch name used to build. It will be used the last commit available in this branch. Defaults to the branch triggering the workflow.'
+    description: "Branch name used to build. It will be used the last commit available in this branch. Defaults to the branch triggering the workflow."
     default: ${GITHUB_REF#refs/heads/}
     required: true
   reuse_branch:
-    description: 'Reuse an existing branch -or- delete the existing branch and create a new one'
+    description: "Reuse an existing branch -or- delete the existing branch and create a new one"
     default: false
   platform_branch:
-    description: 'Name of the branch created in the platform-deployment repository. Defaults to gha-${current-branch-name}'
+    description: "Name of the branch created in the platform-deployment repository. Defaults to gha-${current-branch-name}"
     default: gha-${GITHUB_REF##*/}
     required: true
   command:
-    description: 'Command used in the commit message'
-    default: '[deploy]'
+    description: "Command used in the commit message"
+    default: "[deploy]"
     required: true
   apps:
-    description: 'Target applications of the command in the commit message. E.g.: {lf,lo,iam}'
+    description: "Target applications of the command in the commit message. E.g.: {lf,lo,iam}"
     required: true
   new_chart_version:
-    description: 'Version committed in the chartVersion of the manifest file of the platform-deployment repository. Defaults to 0.0.0-{7-digits-commit-hash}'
+    description: "Version committed in the chartVersion of the manifest file of the platform-deployment repository. Defaults to 0.0.0-{7-digits-commit-hash}"
     required: false
   chart_name:
-    description: 'Name of the manifest chart file in the platform-repository.'
+    description: "Name of the manifest chart file in the platform-repository."
     required: true
 
 runs:
@@ -39,11 +40,7 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.10"
-    - name: Checkout Action Scripts
-      uses: actions/checkout@v3
-      with:
-        repository: labforward/platform-gha
-        path: gha-local
+
     - name: Clone platform-repository
       uses: actions/checkout@v3
       with:
@@ -58,12 +55,12 @@ runs:
     - name: Create Platform Local Branch
       shell: sh
       run: |
-        cd platform-deployment 
+        cd platform-deployment
         git config user.name "GitHub Actions"
         git config user.email "<>"
         if [ '${{ inputs.reuse_branch }}' = 'false' ]; then
           git push origin --delete ${{ inputs.platform_branch }} || echo "Delete branch failed! branch is probably gone already."
-        fi 
+        fi
         git checkout -b ${{ inputs.platform_branch }}
         git pull --rebase --set-upstream origin ${{ inputs.platform_branch }} | true
 
