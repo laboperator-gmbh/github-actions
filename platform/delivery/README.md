@@ -28,7 +28,7 @@ on:
           - deploy
       apps:
         description: "Application's Acronyms to deploy. Check the full list of available applications in
-        https://github.com/labforward/platform-deployment/blob/main/config/installation/activation.properties"
+        https://github.com/laboperator-gmbh/platform-deployment/blob/main/config/installation/activation.properties"
         type: string
         required: true
         default: '{fos}'
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 'Build with CircleCI and Deploy via Platform'
-        uses: labforward/platform-gha/platform/delivery@1
+        uses: laboperator-gmbh/github-actions/platform/delivery@1
         with:
           cci_token: ${{ secrets.CCI_TOKEN }}
           docker_build_job_name: 'docker-build-commit-workflow'
