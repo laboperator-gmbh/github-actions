@@ -28,7 +28,7 @@ on:
           - deploy
       apps:
         description: "Application's Acronyms to deploy. Check the full list of available applications in
-        https://github.com/labforward/platform-deployment/blob/main/config/installation/activation.properties"
+        https://github.com/laboperator-gmbh/platform-deployment/blob/main/config/installation/activation.properties"
         type: string
         required: true
         default: '{fos}'
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 'Create platform-deployment Branch'
-        uses: labforward/platform-gha/platform/branch/create@1
+        uses: laboperator-gmbh/github-actions/platform/branch/create@1
         with:
           gh_pat: ${{ secrets.GH_PAT }}
           apps: ${{ inputs.apps }}

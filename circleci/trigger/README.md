@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 'Trigger CircleCI Build'
-        uses: labforward/platform-gha/circleci/trigger@1
+        uses: laboperator-gmbh/github-actions/circleci/trigger@1
         with:
           cci_token: ${{ secrets.CCI_TOKEN }}
           docker_build_job_name: 'docker-build-commit-workflow'

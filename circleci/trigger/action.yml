@@ -1,7 +1,7 @@
-name: "Trigger CircleCI Build"
+name: 'Trigger CircleCI Build'
 
-description: "Trigger the build pipeline in the current branch. 
-  Intended to build all docker images and charts required to deploy the application."
+description: 'Trigger the build pipeline in the current branch.
+  Intended to build all docker images and charts required to deploy the application.'
 
 inputs:
   cci_token:
@@ -29,19 +29,19 @@ outputs:
     value: ${{ steps.cci_build.outputs.cci_response }}
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Trigger CircleCI Build Workflow.
       shell: bash
       id: trigger_cci
       run: |
-        PROJECT_SLUG="gh/labforward/${{ github.event.repository.name }}"
+        PROJECT_SLUG="gh/laboperator-gmbh/${{ github.event.repository.name }}"
         echo "Triggering pipeline using the {${{ inputs.build_param }}} parameter in the {${{ inputs.branch }}} branch for the {$PROJECT_SLUG} project SLUG."
-        
+
         RESPONSE=$(curl -sS -u "${{ inputs.cci_token }}": --header "Content-Type: application/json" \
           -d "{\"branch\":\"${{ inputs.branch }}\",\"parameters\": {\"${{ inputs.build_param }}\": true}}" \
           https://circleci.com/api/v2/project/${PROJECT_SLUG}/pipeline | jq -r '.id')
-        
+
         echo "::set-output name=cci_response::${RESPONSE}"
 
     - name: Wait for CircleCI Build Workflow.
@@ -53,9 +53,9 @@ runs:
         CCI_BUILD_NAME: ${{ inputs.docker_build_job_name }}
       run: |
         echo "Waiting 30 seconds before start checking CircleCI status."
-        echo "Check on https://app.circleci.com/pipelines/github/labforward/${{ github.event.repository.name }}"
+        echo "Check on https://app.circleci.com/pipelines/github/laboperator-gmbh/${{ github.event.repository.name }}"
         sleep 60
-        curl_status="(curl -sS \"https://circleci.com/api/v2/pipeline/$CCI_RESPONSE/workflow?circle-token=$CCI_TOKEN\" | jq -Mre \".items[] | select(.name == \\\"${CCI_BUILD_NAME}\\\") | .status\"  || echo 'circleci_curl_fail')" 
+        curl_status="(curl -sS \"https://circleci.com/api/v2/pipeline/$CCI_RESPONSE/workflow?circle-token=$CCI_TOKEN\" | jq -Mre \".items[] | select(.name == \\\"${CCI_BUILD_NAME}\\\") | .status\"  || echo 'circleci_curl_fail')"
         STATUS='running'
         while [[ $STATUS = 'running' ]]; do
           echo "Pipeline status is $STATUS"
@@ -66,7 +66,7 @@ runs:
             STATUS=$(eval $curl_status)
           fi
         done
-        
+
         if [[ $STATUS = 'success' ]]; then
           echo 'Build completed successfully!'
           exit 0
