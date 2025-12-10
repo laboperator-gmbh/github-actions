@@ -1,0 +1,33 @@
+name: 'Automatically Approve and Merge Dependabot PR'
+description: 'Automatically Approve and Merge Dependabot PR'
+
+inputs:
+  node-version:
+    description: 'Version Spec of the version to use. Default: lts/*'
+    default: 'lts/*'
+
+runs:
+  using: composite
+  steps:
+    - uses: laboperator-gmbh/github-actions/yarn/dedupe@v1
+      with:
+        node-version: ${{ inputs.node-version}}
+    - id: dependabot-metadata
+      uses: dependabot/fetch-metadata@v2
+    - name: Approve a PR if not already approved
+      shell: bash
+      run: |
+        gh pr checkout "$PR_URL" # sets the upstream metadata for `gh pr status`
+        if [ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" != "APPROVED" ];
+        then gh pr review --approve "$PR_URL"
+        else echo "PR already approved, skipping additional approvals to minimize emails/notification noise.";
+        fi
+      env:
+        PR_URL: ${{github.event.pull_request.html_url}}
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Enable auto-merge for Dependabot PRs
+      shell: bash
+      if: ${{steps.dependabot-metadata.outputs.update-type != 'version-update:semver-major'}}
+      run: gh pr merge --auto --merge "${{github.event.pull_request.html_url}}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
