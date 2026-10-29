@@ -3,8 +3,8 @@ description: 'Run `yarn dedupe` and add a commit if necessary'
 
 inputs:
   node-version:
-    description: 'Version Spec of the version to use. Default: lts/*'
-    default: 'lts/*'
+    description: 'Version Spec of the version to use. Default: 24'
+    default: '24'
 
 runs:
   using: composite
